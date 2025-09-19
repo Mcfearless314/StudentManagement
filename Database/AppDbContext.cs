@@ -52,6 +52,9 @@ public class AppDbContext : DbContext
             ent.Property(c => c.Title)
                 .IsRequired()
                 .HasMaxLength(100);
+
+            ent.Property(c => c.Credits)
+                .IsRequired();
         });
 
         // Configuration for Enrollment entity
@@ -73,6 +76,30 @@ public class AppDbContext : DbContext
             ent.HasOne<Course>()
                 .WithMany()
                 .HasForeignKey(e => e.CourseId)
+                .OnDelete(DeleteBehavior.NoAction);
+        });
+
+        modelBuilder.Entity<Instructor>(ent =>
+        {
+            ent.HasKey(i => i.Id);
+
+            ent.Property(i => i.Id)
+                .ValueGeneratedOnAdd();
+
+            ent.Property(i => i.FirstName)
+                .IsRequired()
+                .HasMaxLength(20);
+
+            ent.Property(i => i.LastName)
+                .IsRequired()
+                .HasMaxLength(20);
+
+            ent.Property(i => i.HireDate)
+                .IsRequired();
+
+            ent.HasMany<Course>()
+                .WithOne()
+                .HasForeignKey(c => c.InstructorId)
                 .OnDelete(DeleteBehavior.NoAction);
         });
     }
