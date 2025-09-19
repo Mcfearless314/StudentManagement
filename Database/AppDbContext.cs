@@ -36,6 +36,9 @@ public class AppDbContext : DbContext
 
             ent.Property(s => s.EnrollmentDate)
                 .IsRequired();
+            
+            ent.Property(s => s.DateOfBirth)
+                .IsRequired();
         });
 
         // Configuration for Course entity

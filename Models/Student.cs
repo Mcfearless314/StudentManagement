@@ -10,4 +10,5 @@ public class Student
     public required string LastName { get; set; }
     public string? Email { get; set; }
     public required DateTime EnrollmentDate { get; set; }
+    public required DateTime DateOfBirth { get; set; }
 }
