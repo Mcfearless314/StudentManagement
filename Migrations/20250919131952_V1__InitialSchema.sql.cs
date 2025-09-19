@@ -15,10 +15,10 @@ namespace StudentManagement.Migrations
                 name: "Courses",
                 columns: table => new
                 {
-                    CourseId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Title = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    Credits = table.Column<int>(type: "INTEGER", nullable: false)
+                    CourseId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Credits = table.Column<int>(type: "int", maxLength: 2, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -29,12 +29,12 @@ namespace StudentManagement.Migrations
                 name: "Students",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    FirstName = table.Column<string>(type: "TEXT", maxLength: 20, nullable: false),
-                    LastName = table.Column<string>(type: "TEXT", maxLength: 40, nullable: false),
-                    Email = table.Column<string>(type: "TEXT", nullable: true),
-                    EnrollmentDate = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EnrollmentDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -45,11 +45,11 @@ namespace StudentManagement.Migrations
                 name: "Enrollments",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    StudentId = table.Column<int>(type: "INTEGER", nullable: false),
-                    CourseId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Grade = table.Column<string>(type: "TEXT", maxLength: 2, nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StudentId = table.Column<int>(type: "int", nullable: false),
+                    CourseId = table.Column<int>(type: "int", nullable: false),
+                    Grade = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: false)
                 },
                 constraints: table =>
                 {

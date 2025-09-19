@@ -5,17 +5,17 @@ namespace StudentManagement.Database;
 
 public class AppDbContext : DbContext
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
-
     public DbSet<Student> Students { get; set; }
     public DbSet<Course> Courses { get; set; }
     public DbSet<Enrollment> Enrollments { get; set; }
 
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        
-        // Configuration for Student entity
+
+        // Configuration on Student entity
         modelBuilder.Entity<Student>(ent =>
         {
             ent.HasKey(s => s.Id);
@@ -34,36 +34,39 @@ public class AppDbContext : DbContext
             ent.Property(s => s.EnrollmentDate)
                 .IsRequired();
         });
-
-        // Configuration for Course entity
+        
+        // Configuration on Course entity
         modelBuilder.Entity<Course>(ent =>
         {
             ent.HasKey(c => c.CourseId);
-
+            
             ent.Property(c => c.CourseId)
                 .ValueGeneratedOnAdd();
 
             ent.Property(c => c.Title)
                 .IsRequired()
                 .HasMaxLength(100);
+            
+            ent.Property(c => c.Credits)
+                .IsRequired();
         });
-
-        // Configuration for Enrollment entity
+        
+        // Configuration on Enrollment entity
         modelBuilder.Entity<Enrollment>(ent =>
         {
             ent.HasKey(e => e.Id);
-
+            
             ent.Property(e => e.Id)
                 .ValueGeneratedOnAdd();
 
             ent.Property(e => e.Grade)
-                .HasMaxLength(2); 
+                .HasMaxLength(2);
 
             ent.HasOne<Student>()
                 .WithMany()
                 .HasForeignKey(e => e.StudentId)
                 .OnDelete(DeleteBehavior.NoAction);
-            
+
             ent.HasOne<Course>()
                 .WithMany()
                 .HasForeignKey(e => e.CourseId)

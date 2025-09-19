@@ -1,38 +1,83 @@
-﻿CREATE TABLE IF NOT EXISTS "__EFMigrationsHistory" (
-    "MigrationId" TEXT NOT NULL CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY,
-    "ProductVersion" TEXT NOT NULL
-);
+﻿IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+BEGIN
+    CREATE TABLE [__EFMigrationsHistory] (
+        [MigrationId] nvarchar(150) NOT NULL,
+        [ProductVersion] nvarchar(32) NOT NULL,
+        CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+    );
+END;
+GO
 
 BEGIN TRANSACTION;
-CREATE TABLE "Courses" (
-    "CourseId" INTEGER NOT NULL CONSTRAINT "PK_Courses" PRIMARY KEY AUTOINCREMENT,
-    "Title" TEXT NOT NULL,
-    "Credits" INTEGER NOT NULL
-);
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20250919131952_V1__InitialSchema.sql'
+)
+BEGIN
+    CREATE TABLE [Courses] (
+        [CourseId] int NOT NULL IDENTITY,
+        [Title] nvarchar(100) NOT NULL,
+        [Credits] int NOT NULL,
+        CONSTRAINT [PK_Courses] PRIMARY KEY ([CourseId])
+    );
+END;
 
-CREATE TABLE "Students" (
-    "Id" INTEGER NOT NULL CONSTRAINT "PK_Students" PRIMARY KEY AUTOINCREMENT,
-    "FirstName" TEXT NOT NULL,
-    "LastName" TEXT NOT NULL,
-    "Email" TEXT NULL,
-    "EnrollmentDate" TEXT NOT NULL
-);
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20250919131952_V1__InitialSchema.sql'
+)
+BEGIN
+    CREATE TABLE [Students] (
+        [Id] int NOT NULL IDENTITY,
+        [FirstName] nvarchar(20) NOT NULL,
+        [LastName] nvarchar(40) NOT NULL,
+        [Email] nvarchar(max) NULL,
+        [EnrollmentDate] datetime2 NOT NULL,
+        CONSTRAINT [PK_Students] PRIMARY KEY ([Id])
+    );
+END;
 
-CREATE TABLE "Enrollments" (
-    "Id" INTEGER NOT NULL CONSTRAINT "PK_Enrollments" PRIMARY KEY AUTOINCREMENT,
-    "StudentId" INTEGER NOT NULL,
-    "CourseId" INTEGER NOT NULL,
-    "Grade" TEXT NOT NULL,
-    CONSTRAINT "FK_Enrollments_Courses_CourseId" FOREIGN KEY ("CourseId") REFERENCES "Courses" ("CourseId"),
-    CONSTRAINT "FK_Enrollments_Students_StudentId" FOREIGN KEY ("StudentId") REFERENCES "Students" ("Id")
-);
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20250919131952_V1__InitialSchema.sql'
+)
+BEGIN
+    CREATE TABLE [Enrollments] (
+        [Id] int NOT NULL IDENTITY,
+        [StudentId] int NOT NULL,
+        [CourseId] int NOT NULL,
+        [Grade] nvarchar(2) NOT NULL,
+        CONSTRAINT [PK_Enrollments] PRIMARY KEY ([Id]),
+        CONSTRAINT [FK_Enrollments_Courses_CourseId] FOREIGN KEY ([CourseId]) REFERENCES [Courses] ([CourseId]),
+        CONSTRAINT [FK_Enrollments_Students_StudentId] FOREIGN KEY ([StudentId]) REFERENCES [Students] ([Id])
+    );
+END;
 
-CREATE INDEX "IX_Enrollments_CourseId" ON "Enrollments" ("CourseId");
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20250919131952_V1__InitialSchema.sql'
+)
+BEGIN
+    CREATE INDEX [IX_Enrollments_CourseId] ON [Enrollments] ([CourseId]);
+END;
 
-CREATE INDEX "IX_Enrollments_StudentId" ON "Enrollments" ("StudentId");
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20250919131952_V1__InitialSchema.sql'
+)
+BEGIN
+    CREATE INDEX [IX_Enrollments_StudentId] ON [Enrollments] ([StudentId]);
+END;
 
-INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
-VALUES ('20250919114750_V1__InitialSchema.sql', '9.0.9');
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20250919131952_V1__InitialSchema.sql'
+)
+BEGIN
+    INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+    VALUES (N'20250919131952_V1__InitialSchema.sql', N'9.0.9');
+END;
 
 COMMIT;
+GO
 
