@@ -26,6 +26,9 @@ public class AppDbContext : DbContext
             ent.Property(s => s.FirstName)
                 .IsRequired()
                 .HasMaxLength(20);
+            
+            ent.Property(s => s.MiddleName)
+                .HasMaxLength(20);
 
             ent.Property(s => s.LastName)
                 .IsRequired()
