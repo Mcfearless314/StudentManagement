@@ -15,7 +15,7 @@ public class AppDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        // Configuration on Student entity
+        // Configuration for Student entity
         modelBuilder.Entity<Student>(ent =>
         {
             ent.HasKey(s => s.Id);
@@ -26,6 +26,9 @@ public class AppDbContext : DbContext
             ent.Property(s => s.FirstName)
                 .IsRequired()
                 .HasMaxLength(20);
+            
+            ent.Property(s => s.MiddleName)
+                .HasMaxLength(20);
 
             ent.Property(s => s.LastName)
                 .IsRequired()
@@ -35,7 +38,7 @@ public class AppDbContext : DbContext
                 .IsRequired();
         });
         
-        // Configuration on Course entity
+        // Configuration for Course entity
         modelBuilder.Entity<Course>(ent =>
         {
             ent.HasKey(c => c.CourseId);
@@ -51,7 +54,7 @@ public class AppDbContext : DbContext
                 .IsRequired();
         });
         
-        // Configuration on Enrollment entity
+        // Configuration for Enrollment entity
         modelBuilder.Entity<Enrollment>(ent =>
         {
             ent.HasKey(e => e.Id);
