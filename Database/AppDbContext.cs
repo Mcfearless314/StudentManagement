@@ -33,6 +33,9 @@ public class AppDbContext : DbContext
             ent.Property(s => s.LastName)
                 .IsRequired()
                 .HasMaxLength(40);
+            
+            ent.Property(s => s.DateOfBirth)
+                .IsRequired();
 
             ent.Property(s => s.EnrollmentDate)
                 .IsRequired();
