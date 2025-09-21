@@ -8,6 +8,7 @@ public class AppDbContext : DbContext
     public DbSet<Student> Students { get; set; }
     public DbSet<Course> Courses { get; set; }
     public DbSet<Enrollment> Enrollments { get; set; }
+    public DbSet<Instructor> Instructors { get; set; }
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
@@ -76,6 +77,31 @@ public class AppDbContext : DbContext
             ent.HasOne<Course>()
                 .WithMany()
                 .HasForeignKey(e => e.CourseId)
+                .OnDelete(DeleteBehavior.NoAction);
+        });
+        
+        // Configuration for Instructor entity
+        modelBuilder.Entity<Instructor>(ent =>
+        {
+            ent.HasKey(i => i.Id);
+
+            ent.Property(i => i.Id)
+                .ValueGeneratedOnAdd();
+
+            ent.Property(i => i.FirstName)
+                .IsRequired()
+                .HasMaxLength(20);
+
+            ent.Property(i => i.LastName)
+                .IsRequired()
+                .HasMaxLength(20);
+
+            ent.Property(i => i.HireDate)
+                .IsRequired();
+
+            ent.HasMany<Course>()
+                .WithOne()
+                .HasForeignKey(c => c.InstructorId)
                 .OnDelete(DeleteBehavior.NoAction);
         });
     }
