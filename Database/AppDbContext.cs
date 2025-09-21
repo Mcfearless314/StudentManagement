@@ -66,7 +66,7 @@ public class AppDbContext : DbContext
             ent.Property(e => e.Id)
                 .ValueGeneratedOnAdd();
 
-            ent.Property(e => e.Grade)
+            ent.Property(e => e.FinalGrade)
                 .HasMaxLength(2);
 
             ent.HasOne<Student>()
