@@ -5,17 +5,20 @@ namespace StudentManagement.Database;
 
 public class AppDbContext : DbContext
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+    {
+    }
 
     public DbSet<Student> Students { get; set; }
     public DbSet<Course> Courses { get; set; }
     public DbSet<Enrollment> Enrollments { get; set; }
     public DbSet<Instructor> Instructors { get; set; }
+    public DbSet<Department> Departments { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        
+
         // Configuration for Student entity
         modelBuilder.Entity<Student>(ent =>
         {
@@ -27,7 +30,7 @@ public class AppDbContext : DbContext
             ent.Property(s => s.FirstName)
                 .IsRequired()
                 .HasMaxLength(20);
-            
+
             ent.Property(s => s.MiddleName)
                 .HasMaxLength(20);
 
@@ -37,7 +40,7 @@ public class AppDbContext : DbContext
 
             ent.Property(s => s.EnrollmentDate)
                 .IsRequired();
-            
+
             ent.Property(s => s.DateOfBirth)
                 .IsRequired();
         });
@@ -73,7 +76,7 @@ public class AppDbContext : DbContext
                 .WithMany()
                 .HasForeignKey(e => e.StudentId)
                 .OnDelete(DeleteBehavior.NoAction);
-            
+
             ent.HasOne<Course>()
                 .WithMany()
                 .HasForeignKey(e => e.CourseId)
@@ -101,6 +104,32 @@ public class AppDbContext : DbContext
             ent.HasMany<Course>()
                 .WithOne()
                 .HasForeignKey(c => c.InstructorId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            ent.HasOne<Department>().
+                WithOne(d => d.DepartmentHead);
+        });
+
+        modelBuilder.Entity<Department>(ent =>
+        {
+            ent.HasKey(d => d.Id);
+
+            ent.Property(d => d.Id)
+                .ValueGeneratedOnAdd();
+
+            ent.Property(d => d.Name)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            ent.Property(d => d.Budget)
+                .IsRequired();
+
+            ent.Property(d => d.StartDate)
+                .IsRequired();
+
+            ent.HasOne(d => d.DepartmentHead)
+                .WithOne()
+                .HasForeignKey<Department>(d => d.DepartmentHeadId)
                 .OnDelete(DeleteBehavior.NoAction);
         });
     }
