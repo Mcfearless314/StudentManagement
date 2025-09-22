@@ -58,7 +58,8 @@ public class AppDbContext : DbContext
                 .HasMaxLength(100);
 
             ent.Property(c => c.Credits)
-                .IsRequired();
+                .IsRequired()
+                .HasColumnType("decimal(5, 2)");
         });
 
         // Configuration for Enrollment entity
