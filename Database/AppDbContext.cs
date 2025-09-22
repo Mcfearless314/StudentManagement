@@ -9,6 +9,7 @@ public class AppDbContext : DbContext
     public DbSet<Course> Courses { get; set; }
     public DbSet<Enrollment> Enrollments { get; set; }
     public DbSet<Instructor> Instructors { get; set; }
+    public DbSet<Department> Departments { get; set; }
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
@@ -102,6 +103,30 @@ public class AppDbContext : DbContext
             ent.HasMany<Course>()
                 .WithOne()
                 .HasForeignKey(c => c.InstructorId)
+                .OnDelete(DeleteBehavior.NoAction);
+        });
+        
+        // Configuration for Department entity
+        modelBuilder.Entity<Department>(ent => 
+        {
+            ent.HasKey(d => d.Id);
+
+            ent.Property(d => d.Id)
+                .ValueGeneratedOnAdd();
+
+            ent.Property(d => d.Name)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            ent.Property(d => d.Budget)
+                .IsRequired();
+
+            ent.Property(d => d.StartDate)
+                .IsRequired();
+            
+            ent.HasOne(d => d.DepartmentHead)
+                .WithOne()
+                .HasForeignKey<Department>(d => d.DepartmentHeadId)
                 .OnDelete(DeleteBehavior.NoAction);
         });
     }
