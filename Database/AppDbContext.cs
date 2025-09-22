@@ -56,6 +56,7 @@ public class AppDbContext : DbContext
                 .HasMaxLength(100);
             
             ent.Property(c => c.Credits)
+                .HasColumnType("decimal(5,2)")
                 .IsRequired();
         });
         
